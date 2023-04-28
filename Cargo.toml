@@ -1,0 +1,14 @@
+[package]
+name = "ndice"
+version = "0.1.0"
+edition = "2021"
+authors = ["Kevin Gimbel <hallo@kevingimbel.com>"]
+repository = "https://github.com/kevingimbel/ndice"
+license = "MIT"
+exclude = [".github", "assets", "helpers", "tests", ".gitignore", "Makefile"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rand = "0.8.5"
+regex = "1"
