@@ -1,8 +1,10 @@
 use std::fmt;
-
+#[cfg(feature = "json")]
+use serde::{Serialize, Deserialize};
 use rand::{thread_rng, Rng};
 
 #[derive(Debug)]
+#[cfg_attr(feature="json", derive(Serialize, Deserialize))]
 pub struct Dice {
     pub sides: u64,
     pub min: u64,
@@ -17,12 +19,14 @@ impl Dice {
 }
 
 #[derive(Debug)]
+#[cfg_attr(feature="json", derive(Serialize, Deserialize))]
 pub struct RollingHand {
     pub dices: Vec<Dice>,
     pub result: RollingHandResult,
 }
 
 #[derive(Debug)]
+#[cfg_attr(feature="json", derive(Serialize, Deserialize))]
 pub struct RollingHandResult {
     pub sum: u64,
     pub rolls: Vec<DiceResult>,
@@ -35,6 +39,7 @@ impl Default for RollingHandResult {
 }
 
 #[derive(Debug)]
+#[cfg_attr(feature="json", derive(Serialize, Deserialize))]
 pub struct DiceResult {
     pub sides: u64,
     pub result: u64,

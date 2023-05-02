@@ -13,6 +13,10 @@ exclude = [".github", "assets", "helpers", "tests", ".gitignore", "Makefile"]
 [dependencies]
 rand = "0.8.5"
 regex = "1"
+serde = { version = "1.0", features = ["derive"], optional = true }
+
+[features]
+json = ["dep:serde"]
 
 [lib]
 name = "ndice"
