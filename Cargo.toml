@@ -13,3 +13,11 @@ exclude = [".github", "assets", "helpers", "tests", ".gitignore", "Makefile"]
 [dependencies]
 rand = "0.8.5"
 regex = "1"
+
+[lib]
+name = "ndice"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ndice"
+path = "src/bin.rs"

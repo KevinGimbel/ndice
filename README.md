@@ -97,5 +97,3 @@ cargo install --git https://github.com/KevinGimbel/ndice--force --branch $BRANCH
 [⬆️ Back to Top](#table-of-contents)
 
 MIT, see LICENSE file.
-
-
