@@ -83,13 +83,13 @@ Here are some good places to start:
 
 ### Install dev build
 
-Sometimes it's nice to install a specific version of mktoc, this can be done with the following command:
+Sometimes it's nice to install a specific version of ndice, this can be done with the following command:
 
 ```sh
 # install specific commit
-cargo install --git https://github.com/KevinGimbel/mktoc --force --rev $COMMIT_ID
+cargo install --git https://github.com/KevinGimbel/ndice--force --rev $COMMIT_ID
 # install branch
-cargo install --git https://github.com/KevinGimbel/mktoc --force --branch $BRANCH_NAME
+cargo install --git https://github.com/KevinGimbel/ndice--force --branch $BRANCH_NAME
 ```
 
 
