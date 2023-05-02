@@ -73,8 +73,8 @@ We love and welcome every form of contribution.
 
 Here are some good places to start:
 
-* Issues with label [Good first issue](https://github.com/kevingimbel/mktoc/labels/good%20first%20issue)
-* Issues with label [Documentation](https://github.com/kevingimbel/mktoc/labels/documentation)
+* Issues with label [Good first issue](https://github.com/kevingimbel/ndice/labels/good%20first%20issue)
+* Issues with label [Documentation](https://github.com/kevingimbel/ndice/labels/documentation)
 * Providing example implementations or usage demos
 
 ### Tooling
