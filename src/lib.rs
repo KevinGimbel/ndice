@@ -11,13 +11,17 @@ fn str_to_u64(input: &str) -> u64 {
     return du64;
 }
 
-
-pub fn parse_dice(args: std::env::Args) -> RollingHand {
-    let mut hand = RollingHand::default();
+fn parse_dice_from_str(input: &str) -> Option<regex::Captures<'_>> {
     let rx = Regex::new(DICE_REGEX).unwrap();
+    
+    rx.captures(input)
+}
+
+pub fn parse_dices(args: Vec<String>) -> RollingHand {
+    let mut hand = RollingHand::default();
 
     for arg in args {
-        let res = rx.captures(&arg.as_str());
+        let res = parse_dice_from_str(arg.as_str());
 
         match res {
             Some(matches) => {
