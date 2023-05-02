@@ -80,7 +80,6 @@ Here are some good places to start:
 ### Tooling
 
 - [mktoc](https://github.com/KevinGimbel/mktoc) is used for table of content generation in the README.md (neat!)
-- [criterion](https://github.com/bheisler/criterion.rs) for benchmarking
 
 ### Install dev build
 
