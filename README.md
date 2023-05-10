@@ -10,7 +10,10 @@
 - [Installation](#installation)
   - [Binary](#binary)
   - [Cargo ](#cargo)
-- [Usage ](#usage)
+- [Usage (CLI)](#usage-cli)
+  - [Exploding dice](#exploding-dice)
+  - [Modifier](#modifier)
+- [Usage (Library)](#usage-library)
 - [Contributing](#contributing)
   - [Where to start?](#where-to-start)
   - [Tooling](#tooling)
@@ -20,14 +23,13 @@
 
 ## About
 
-`ndice` is a cli dice roller. 
+`ndice` is a cli dice roller and dice-rolling library.
 
-Dices are writen in the format `${number}d{$sides}`, e.g. `1d6` means 1 six-sided dice. There's no limit to sides so a non-existing dice like `1d13` can be rolled. 
+Dices are writen in the format `${number}${exploding}d{$sides}`, e.g. `1d6` means 1 six-sided dice. There's no limit to sides so a non-existing dice like `1d13` can be rolled. 
 
 - Each space-speparated argument is counted as one dice notation.
 - Dices can be mixed, so `ndice 1d6 2d8 4d10` works.
 - Invalid arguments are ignored.
-
 
 ## Installation
 [⬆️ Back to Top](#table-of-contents)
@@ -43,7 +45,7 @@ Install with cargo:
 $ cargo install ndice
 ```
 
-## Usage 
+## Usage (CLI)
 [⬆️ Back to Top](#table-of-contents)
 
 ```sh
@@ -62,6 +64,54 @@ $ ndice 2d8 2d4
 Rolled: ["d8 => 6", "d8 => 3", "d4 => 1", "d4 => 1"]
 Result: 11
 ```
+
+
+### Exploding dice
+
+An exploding dice is a dice that is re-rolled when the highest possible value is rolled. 
+
+To roll a exploding dice use `ed` instead of `d` as argument. 
+
+- `1d6` -> normal d6
+- `1ed6` -> exploding d6
+
+### Modifier
+
+A positive or negative modifier can be added to each dice.
+
+- `1d6+2` -> add +2 to the result of rolling a d6
+- `1d20-4` -> subtract 4 from the result of rolling a d20
+
+## Usage (Library)
+
+ndice can be used as library.
+
+Add the library to Cargo.toml
+
+```toml
+[dependencies]
+ndice = 1.0
+```
+
+Optional JSON features can be enabled with a flag.
+
+```toml
+[dependencies]
+ndice = { version = "1.0", features = ["json"] }
+```
+
+And finally, call the two functions: `ndice::parse_dices` and `ndice::roll_dices`.
+
+```rust
+fn my_func() {
+  let args: Vec<String> = vec![String::from("1d6"), String::from("2d4"), String::from("1ed4")];
+  let dice_in_hand = ndice::parse_dices(args).unwrap();
+  let roll = ndice::roll_dices(dice_in_hand);
+  println!("{}", roll);
+}
+```
+
+See [src/bin.rs](https://github.com/KevinGimbel/ndice/blob/main/src/bin.rs) for an example implementation.
 
 
 ## Contributing
@@ -91,7 +141,6 @@ cargo install --git https://github.com/KevinGimbel/ndice--force --rev $COMMIT_ID
 # install branch
 cargo install --git https://github.com/KevinGimbel/ndice--force --branch $BRANCH_NAME
 ```
-
 
 ## License
 [⬆️ Back to Top](#table-of-contents)
