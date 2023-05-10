@@ -20,7 +20,6 @@ impl Dice {
             let mut last_result = rng.gen_range(self.min..=self.sides);
             n = last_result;
             while last_result != self.sides {
-                println!("last_result = {}", last_result);
                 last_result = rng.gen_range(self.min..=self.sides);
                 n += last_result
             }
