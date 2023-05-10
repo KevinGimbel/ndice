@@ -15,7 +15,18 @@ pub struct Dice {
 impl Dice {
     pub fn roll(&self) -> i64 {
         let mut rng = thread_rng();
-        let n: i64 = rng.gen_range(self.min..self.sides);
+        let mut n: i64;
+        if self.exploding_dice {
+            let mut last_result = rng.gen_range(self.min..=self.sides);
+            n = last_result;
+            while last_result != self.sides {
+                println!("last_result = {}", last_result);
+                last_result = rng.gen_range(self.min..=self.sides);
+                n += last_result
+            }
+        } else {
+            n = rng.gen_range(self.min..=self.sides);
+        }
         n
     }
 }
@@ -81,11 +92,16 @@ pub struct DiceResult {
     pub sides: i64,
     pub result: i64,
     pub modifier: String,
+    pub exploding_dice: String,
 }
 
 impl fmt::Display for DiceResult {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "d{} => {} ({})", self.sides, self.result, self.modifier)
+        write!(
+            f,
+            "{}d{} => {} ({})",
+            self.exploding_dice, self.sides, self.result, self.modifier
+        )
     }
 }
 

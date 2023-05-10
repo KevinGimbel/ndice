@@ -1,4 +1,5 @@
 use regex::Regex;
+use std::num::ParseIntError;
 
 pub mod structs;
 
@@ -6,9 +7,8 @@ use structs::{Dice, DiceModifier, DiceResult, RollingHand, RollingHandResult};
 
 const DICE_REGEX: &str = r#"(?P<numberOfDice>[^[dwe\s+-]]+\d?)(?P<explodingDice>[e])?(?P<diceIndicator>[dw])(?P<numberOfSides>\d+)(?P<mod>[+-]\d+)?"#;
 
-fn str_to_i64(input: &str) -> i64 {
-    let di64: i64 = input.parse().unwrap();
-    return di64;
+fn str_to_i64(input: &str) -> Result<i64, ParseIntError> {
+    input.parse()
 }
 
 fn parse_dice_from_str(input: &str) -> Option<regex::Captures<'_>> {
@@ -17,7 +17,7 @@ fn parse_dice_from_str(input: &str) -> Option<regex::Captures<'_>> {
     rx.captures(input)
 }
 
-pub fn parse_dices(args: Vec<String>) -> RollingHand {
+pub fn parse_dices(args: Vec<String>) -> Result<RollingHand, ParseIntError> {
     let mut hand = RollingHand::default();
 
     for arg in args {
@@ -38,14 +38,14 @@ pub fn parse_dices(args: Vec<String>) -> RollingHand {
                 };
                 let modifier_value: i64 =
                     match modifier.split(&['+', '-']).collect::<Vec<&str>>().last() {
-                        Some(v) => match v.parse::<i64>() {
+                        Some(v) => match str_to_i64(v) {
                             Ok(v) => v,
                             Err(_e) => 0,
                         },
                         _ => 0,
                     };
-                let dices = str_to_i64(number_of_dice);
-                let sides = str_to_i64(number_of_sides);
+                let dices = str_to_i64(number_of_dice)?;
+                let sides = str_to_i64(number_of_sides)?;
                 // match minimum number on dice based on dice type
                 let min: i64 = match sides {
                     10 => 0,
@@ -68,7 +68,7 @@ pub fn parse_dices(args: Vec<String>) -> RollingHand {
         }
     }
 
-    hand
+    Ok(hand)
 }
 
 pub fn roll_dices(in_hand: RollingHand) -> RollingHandResult {
@@ -78,13 +78,20 @@ pub fn roll_dices(in_hand: RollingHand) -> RollingHandResult {
     for dice in hand.dices {
         let dice_result = dice.roll();
         let mut modi = "-";
+        let mut exploding = "";
         if dice.modifier.is_plus {
             modi = "+";
+        };
+
+        if dice.exploding_dice {
+            exploding = "e";
         }
+
         result.rolls.push(DiceResult {
             sides: dice.sides,
             result: dice_result,
             modifier: format!("{}{}", modi, dice.modifier.value),
+            exploding_dice: String::from(exploding),
         });
         result.sum += dice_result;
         if dice.modifier.is_plus {
@@ -182,7 +189,7 @@ mod tests {
 
         for test in tests {
             dbg!(test.name);
-            let dice = parse_dices(vec![String::from(test.input)]);
+            let dice = parse_dices(vec![String::from(test.input)]).unwrap();
             assert_eq!(test.expected, dice)
         }
     }
